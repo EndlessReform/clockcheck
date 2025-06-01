@@ -5,7 +5,10 @@ import tomllib
 
 class ModelConfig(BaseModel):
     model_type: Literal["huggingface", "openai"]
-    model_endpoint: Optional[str]
+    model_endpoint: Optional[str] = None
+    """
+    Defaults to first-party OpenAI endpoint
+    """
     model_id: Optional[str]
     voice: Optional[str]
     requests_per_minute: int = -1
@@ -15,8 +18,8 @@ class ModelConfig(BaseModel):
 
 
 class Config(BaseModel):
-    dataset_id: Optional[str]
-    dataset_path: Optional[str]
+    dataset_id: Optional[str] = None
+    dataset_path: Optional[str] = None
     """
     Can be HuggingFace dataset ID or local path
     """

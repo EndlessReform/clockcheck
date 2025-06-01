@@ -1,7 +1,7 @@
 import io
 import librosa
 import numpy as np
-from openai import OpenAI
+from openai import AsyncOpenAI
 import soundfile as sf
 from typing import Optional
 
@@ -17,7 +17,7 @@ class OpenAITTSModel(TTSModel):
         endpoint: Optional[str] = None,
         voice: str = "nova",
     ):
-        self.client = OpenAI(api_key=api_key, base_url=endpoint)
+        self.client = AsyncOpenAI(api_key=api_key, base_url=endpoint)
         self.model = model
         self.voice = voice
 
@@ -36,9 +36,9 @@ class OpenAITTSModel(TTSModel):
             api_key=api_key, model=model, endpoint=config.model_endpoint, voice=voice
         )
 
-    def generate(self, text: str) -> np.ndarray:
-        response = self.client.audio.speech.create(
-            model=self.model, voice=self.voice, input=text, response_format="pcm"
+    async def generate(self, text: str) -> np.ndarray:
+        response = await self.client.audio.speech.create(
+            model=self.model, voice=self.voice, input=text, response_format="wav"
         )
         # The response is an MP3 file. We need to decode to PCM 24kHz
         audio_bytes = response.content

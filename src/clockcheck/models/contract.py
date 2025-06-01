@@ -19,7 +19,7 @@ class TTSModel(ABC):
         pass
 
     @abstractmethod
-    def generate(self, text: str) -> np.ndarray:
+    async def generate(self, text: str) -> np.ndarray:
         """
         Generate a PCM waveform at 24kHz from input text.
 

@@ -1,5 +1,6 @@
-dataset_id = "datasets/time-simple"
+dataset_path = "datasets/time-simple"
 
 [model]
-type = "openai"
-voice = "alloy"
+model_type = "openai"
+model_id = "gpt-4o-mini-tts"
+voice = "nova"
