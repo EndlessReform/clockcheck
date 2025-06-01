@@ -8,10 +8,15 @@ class ModelConfig(BaseModel):
     model_endpoint: Optional[str]
     model_id: Optional[str]
     voice: Optional[str]
+    requests_per_minute: int = -1
+    """
+    If not set, generation will be in serial
+    """
 
 
 class Config(BaseModel):
-    dataset_id: str
+    dataset_id: Optional[str]
+    dataset_path: Optional[str]
     """
     Can be HuggingFace dataset ID or local path
     """
@@ -32,4 +37,12 @@ class Config(BaseModel):
         """
         with open(file_path, "rb") as f:
             config_dict = tomllib.load(f)
+
+        if config_dict.get("dataset_id") and config_dict.get("dataset_path"):
+            raise ValueError(
+                "Only one of 'dataset_id' or 'dataset_path' may be specified, not both."
+            )
+        if not config_dict.get("dataset_id") and not config_dict.get("dataset_path"):
+            raise ValueError("One of 'dataset_id' or 'dataset_path' must be specified.")
+
         return cls(**config_dict)
