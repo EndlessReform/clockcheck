@@ -4,3 +4,7 @@ dataset_path = "datasets/time-simple"
 model_type = "openai"
 model_id = "gpt-4o-mini-tts"
 voice = "nova"
+
+[transcriber]
+model_type = "openai"
+model_id = "gpt-4o-mini-transcribe"

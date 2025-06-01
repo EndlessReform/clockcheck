@@ -5,6 +5,7 @@ import os
 
 from clockcheck.utils.config import Config
 import clockcheck.models as models
+import clockcheck.transcribers as transcribers
 
 
 async def main():
@@ -36,10 +37,12 @@ async def main():
         else load_from_disk(config.dataset_path)
     )
     tts_model = models.from_config(config.model)
+    transcriber = transcribers.from_config(config.transcriber)
 
-    # TODO remove
-    dataset = dataset.take(3)
+    # TODO remove the limit
+    dataset = dataset.take(2)
     ds_pred = await models.run_ds(dataset, tts_model, config.model)
+    ds_pred = await transcribers.run_ds(ds_pred, transcriber, config.transcriber)
     # TODO proper error handling, file location
     ds_pred.save_to_disk("./datasets/dataset_pred")
     print("Saved to ./datasets/dataset_pred")

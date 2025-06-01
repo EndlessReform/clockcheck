@@ -17,6 +17,19 @@ class ModelConfig(BaseModel):
     """
 
 
+class TranscriptionConfig(BaseModel):
+    model_type: Literal["openai", "parakeet"]
+    model_endpoint: Optional[str] = None
+    """
+    Defaults to first-party OpenAI endpoint
+    """
+    model_id: Optional[str]
+    requests_per_minute: int = -1
+    """
+    If not set, generation will be in serial
+    """
+
+
 class Config(BaseModel):
     dataset_id: Optional[str] = None
     dataset_path: Optional[str] = None
@@ -25,7 +38,7 @@ class Config(BaseModel):
     """
 
     model: ModelConfig
-    # TODO add transcription model config
+    transcriber: TranscriptionConfig
 
     @classmethod
     def from_toml(cls, file_path: str) -> "Config":
