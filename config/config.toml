@@ -1,0 +1,5 @@
+dataset_id = "datasets/time-simple"
+
+[model]
+type = "openai"
+voice = "alloy"
