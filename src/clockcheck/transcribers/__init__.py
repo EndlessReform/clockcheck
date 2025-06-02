@@ -13,6 +13,7 @@ _TRANSCRIBER_CLASSES: Dict[str, Type[Transcriber]] = {
     "openai": OpenAITranscriber,
 }
 
+
 def from_config(config: ModelConfig) -> Transcriber:
     """Create a Transcriber from configuration.
 
@@ -29,6 +30,7 @@ def from_config(config: ModelConfig) -> Transcriber:
     if not transcriber_class:
         raise ValueError(f"Unknown transcriber type: {config.model_type}")
     return transcriber_class.from_config(config)
+
 
 async def run_ds(ds: Dataset, transcriber: Transcriber, config: ModelConfig) -> Dataset:
     """Run transcription on a dataset using the given transcriber and config.
@@ -60,7 +62,7 @@ async def run_ds(ds: Dataset, transcriber: Transcriber, config: ModelConfig) -> 
                     print(f"Skipping item due to missing 'audio' field: {item_data}")
                     return None
                 text = await transcriber.transcribe(audio_data)
-                return {**item_data, "text": text}
+                return {**item_data, "transcribed_text": text}
             except Exception as e:
                 print(f"Failed to transcribe audio: {e}")
                 return None
@@ -77,5 +79,6 @@ async def run_ds(ds: Dataset, transcriber: Transcriber, config: ModelConfig) -> 
         print("Warning: All transcription jobs failed or returned None.")
 
     return Dataset.from_list(successful_results)
+
 
 __all__ = ["Transcriber", "from_config", "run_ds"]

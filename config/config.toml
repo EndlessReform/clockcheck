@@ -3,8 +3,10 @@ dataset_path = "datasets/time-simple"
 [model]
 model_type = "openai"
 model_id = "gpt-4o-mini-tts"
-voice = "nova"
+voice = "coral"
+requests_per_minute = 250
 
 [transcriber]
 model_type = "openai"
 model_id = "gpt-4o-mini-transcribe"
+requests_per_minute = 250

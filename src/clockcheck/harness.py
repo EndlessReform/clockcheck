@@ -39,13 +39,12 @@ async def main():
     tts_model = models.from_config(config.model)
     transcriber = transcribers.from_config(config.transcriber)
 
-    # TODO remove the limit
-    dataset = dataset.take(2)
     ds_pred = await models.run_ds(dataset, tts_model, config.model)
     ds_pred = await transcribers.run_ds(ds_pred, transcriber, config.transcriber)
     # TODO proper error handling, file location
-    ds_pred.save_to_disk("./datasets/dataset_pred")
-    print("Saved to ./datasets/dataset_pred")
+    # TODO add metadata
+    ds_pred.save_to_disk("./datasets/dataset_oai_coral")
+    print("Saved to ./datasets/dataset_oai_coral")
 
 
 if __name__ == "__main__":
