@@ -5,3 +5,7 @@ datasets
 # Python
 __pycache__
 *.egg-info
+
+# Data files
+*.csv
+*.jsonl
