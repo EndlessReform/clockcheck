@@ -1,0 +1,14 @@
+dataset_path = "datasets/time-simple"
+
+[model]
+model_type = "openai"
+model_id = "gpt-4o-mini-tts"
+voice = "coral"
+requests_per_minute = 250
+
+[transcriber]
+model_type = "whisper-cpp"
+model_id = "whisper-1"
+# TODO see if we can get more requests per minute
+requests_per_second = -1
+base_url = "http://localhost:5000"

@@ -5,7 +5,7 @@ import tomllib
 
 class ModelConfig(BaseModel):
     model_type: Literal["huggingface", "openai"]
-    model_endpoint: Optional[str] = None
+    base_url: Optional[str] = None
     """
     Defaults to first-party OpenAI endpoint
     """
@@ -18,13 +18,13 @@ class ModelConfig(BaseModel):
 
 
 class TranscriptionConfig(BaseModel):
-    model_type: Literal["openai", "parakeet"]
-    model_endpoint: Optional[str] = None
+    model_type: Literal["openai", "whisper-cpp"]
+    base_url: Optional[str] = None
     """
     Defaults to first-party OpenAI endpoint
     """
     model_id: Optional[str]
-    requests_per_minute: int = -1
+    requests_per_second: int = -1
     """
     If not set, generation will be in serial
     """

@@ -26,15 +26,13 @@ class OpenAITTSModel(TTSModel):
         import os
 
         api_key = os.environ.get("OPENAI_API_KEY")
-        if not api_key and not config.model_endpoint:
+        if not api_key and not config.base_url:
             raise ValueError(
                 "OpenAI API key not found in environment, but you're hitting OpenAI's first-party API."
             )
         model = config.model_id or "tts-1"
         voice = config.voice or "nova"
-        return cls(
-            api_key=api_key, model=model, endpoint=config.model_endpoint, voice=voice
-        )
+        return cls(api_key=api_key, model=model, endpoint=config.base_url, voice=voice)
 
     async def generate(self, text: str) -> np.ndarray:
         response = await self.client.audio.speech.create(
