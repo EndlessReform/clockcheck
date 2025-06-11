@@ -9,3 +9,8 @@ __pycache__
 # Data files
 *.csv
 *.jsonl
+*.wav
+
+unsloth_compiled_cache
+test-csm.ipynb
+train/outputs

@@ -40,11 +40,13 @@ async def main():
     transcriber = transcribers.from_config(config.transcriber)
 
     ds_pred = await models.run_ds(dataset, tts_model, config.model)
+    # ds_pred = load_from_disk("./datasets/dataset_oai_coral_0601")
+
     ds_pred = await transcribers.run_ds(ds_pred, transcriber, config.transcriber)
     # TODO proper error handling, file location
     # TODO add metadata
-    ds_pred.save_to_disk("./datasets/dataset_oai_coral")
-    print("Saved to ./datasets/dataset_oai_coral")
+    ds_pred.save_to_disk(config.output_dataset_path)
+    print(f"Saved to {config.output_dataset_path}")
 
 
 if __name__ == "__main__":

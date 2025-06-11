@@ -5,7 +5,7 @@ import soundfile as sf
 from typing import Optional
 
 from clockcheck.transcribers.contract import Transcriber
-from clockcheck.utils.config import ModelConfig
+from clockcheck.utils.config import TranscriptionConfig
 
 
 class OpenAITranscriber(Transcriber):
@@ -19,14 +19,14 @@ class OpenAITranscriber(Transcriber):
         self.model = model
 
     @classmethod
-    def from_config(cls, config: ModelConfig) -> "OpenAITranscriber":
+    def from_config(cls, config: TranscriptionConfig) -> "OpenAITranscriber":
         api_key = config.api_key if hasattr(config, "api_key") else None
         model = (
             config.model_id
             if getattr(config, "model_id", None)
             else "gpt-4o-mini-transcribe"
         )
-        endpoint = getattr(config, "model_endpoint", None)
+        endpoint = getattr(config, "base_url", None)
         return cls(api_key=api_key, model=model, endpoint=endpoint)
 
     async def transcribe(self, audio: np.ndarray) -> str:

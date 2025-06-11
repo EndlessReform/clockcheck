@@ -7,10 +7,12 @@ from typing import Dict, Type
 from clockcheck.transcribers.contract import Transcriber
 from clockcheck.utils.config import ModelConfig
 from .openai_asr import OpenAITranscriber
+from .whisper_cpp import WhisperCppTranscriber
 
 # Map transcriber types to their implementation classes
 _TRANSCRIBER_CLASSES: Dict[str, Type[Transcriber]] = {
     "openai": OpenAITranscriber,
+    "whisper-cpp": WhisperCppTranscriber,
 }
 
 
@@ -45,14 +47,14 @@ async def run_ds(ds: Dataset, transcriber: Transcriber, config: ModelConfig) -> 
     """
     actual_limiter: asyncio.Semaphore | AsyncLimiter
 
-    if getattr(config, "requests_per_minute", -1) == -1:
+    if getattr(config, "requests_per_second", -1) == -1:
         actual_limiter = asyncio.Semaphore(1)
     else:
-        if getattr(config, "requests_per_minute", 0) <= 0:
+        if getattr(config, "requests_per_second", 0) <= 0:
             raise ValueError(
-                "config.requests_per_minute must be positive for rate limiting, or -1 for sequential."
+                "config.requests_per_second must be positive for rate limiting, or -1 for sequential."
             )
-        actual_limiter = AsyncLimiter(config.requests_per_minute, 60.0)
+        actual_limiter = AsyncLimiter(config.requests_per_second, 1.0)
 
     async def process_item(item_data: dict) -> dict | None:
         async with actual_limiter:
