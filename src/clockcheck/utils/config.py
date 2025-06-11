@@ -36,6 +36,7 @@ class Config(BaseModel):
     """
     Can be HuggingFace dataset ID or local path
     """
+    output_dataset_path: Optional[str] = "./datasets/dataset_pred"
 
     model: ModelConfig
     transcriber: TranscriptionConfig
